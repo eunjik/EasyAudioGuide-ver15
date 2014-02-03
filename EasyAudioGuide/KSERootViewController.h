@@ -7,9 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KSEContainer.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface KSERootViewController : UIViewController <UIPageViewControllerDelegate>
+
+@interface KSERootViewController : UIViewController <UIPageViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
+//@property (strong, nonatomic) IBOutlet UIButton *startButton;
+@property (strong, nonatomic) NSMutableArray *containerArray;
+@property NSTimer *timer;
+@property (strong, nonatomic) UITableViewController *tableViewController;
+@property (strong, nonatomic) UITableView *tableView;
+
+//- (IBAction)startButtonClick:(id)sender;
 
 @end

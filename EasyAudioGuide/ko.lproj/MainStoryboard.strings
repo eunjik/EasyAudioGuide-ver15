@@ -1,0 +1,117 @@
+
+/* Class = "IBUILabel"; text = "재생 중인 오디오가 없습니다"; ObjectID = "2ru-95-UFU"; */
+"2ru-95-UFU.text" = "재생 중인 오디오가 없습니다";
+
+/* Class = "IBUIButton"; normalTitle = "7"; ObjectID = "3Mh-Fc-G5t"; */
+"3Mh-Fc-G5t.normalTitle" = "7";
+
+/* Class = "IBUIButton"; normalTitle = "4"; ObjectID = "3Pf-GZ-TKA"; */
+"3Pf-GZ-TKA.normalTitle" = "4";
+
+/* Class = "IBUILabel"; text = "INFO"; ObjectID = "5K6-HF-AJk"; */
+"5K6-HF-AJk.text" = "INFO";
+
+/* Class = "IBUILabel"; text = "재생 중인 오디오가 없습니다"; ObjectID = "5nA-IL-Z8j"; */
+"5nA-IL-Z8j.text" = "재생 중인 오디오가 없습니다";
+
+/* Class = "IBUILabel"; text = "INTRO"; ObjectID = "6bJ-oL-bG9"; */
+"6bJ-oL-bG9.text" = "INTRO";
+
+/* Class = "IBUIButton"; normalTitle = "2"; ObjectID = "8wm-zZ-mzi"; */
+"8wm-zZ-mzi.normalTitle" = "2";
+
+/* Class = "IBUILabel"; text = "작품 번호를 입력해주세요"; ObjectID = "Axg-Sq-xvn"; */
+"Axg-Sq-xvn.text" = "작품 번호를 입력해주세요";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Be9-go-Ipb"; */
+"Be9-go-Ipb.text" = "Label";
+
+/* Class = "IBUIButton"; normalTitle = "9"; ObjectID = "Clc-Uq-8cE"; */
+"Clc-Uq-8cE.normalTitle" = "9";
+
+/* Class = "IBUIButton"; normalTitle = "0"; ObjectID = "IG9-Mv-Nkv"; */
+"IG9-Mv-Nkv.normalTitle" = "0";
+
+/* Class = "IBUIButton"; normalTitle = "8"; ObjectID = "Kzz-DH-C6h"; */
+"Kzz-DH-C6h.normalTitle" = "8";
+
+/* Class = "IBUIButton"; normalTitle = "0"; ObjectID = "MPD-6M-a0V"; */
+"MPD-6M-a0V.normalTitle" = "0";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "PAM-Ld-X6w"; */
+"PAM-Ld-X6w.text" = "Label";
+
+/* Class = "IBUIButton"; normalTitle = "8"; ObjectID = "PJ0-hd-qOh"; */
+"PJ0-hd-qOh.normalTitle" = "8";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Qlp-dS-evW"; */
+"Qlp-dS-evW.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Wwp-g9-i6N"; */
+"Wwp-g9-i6N.text" = "Label";
+
+/* Class = "IBUIButton"; normalTitle = "3"; ObjectID = "Wxk-M4-dah"; */
+"Wxk-M4-dah.normalTitle" = "3";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Y3v-9S-OuC"; */
+"Y3v-9S-OuC.text" = "Label";
+
+/* Class = "IBUITextView"; text = "스크립트가 없습니다"; ObjectID = "Yik-zC-UVj"; */
+"Yik-zC-UVj.text" = "스크립트가 없습니다";
+
+/* Class = "IBUIButton"; normalTitle = "6"; ObjectID = "Yww-uv-x2f"; */
+"Yww-uv-x2f.normalTitle" = "6";
+
+/* Class = "IBUIButton"; normalTitle = "Delete"; ObjectID = "c91-mo-Hu7"; */
+"c91-mo-Hu7.normalTitle" = "Delete";
+
+/* Class = "IBUILabel"; text = "작품 번호"; ObjectID = "cRT-66-2uH"; */
+"cRT-66-2uH.text" = "작품 번호";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "daW-WR-M24"; */
+"daW-WR-M24.text" = "Label";
+
+/* Class = "IBUILabel"; text = "작품 번호를 입력해주세요"; ObjectID = "eKq-P5-uhi"; */
+"eKq-P5-uhi.text" = "작품 번호를 입력해주세요";
+
+/* Class = "IBUIButton"; normalTitle = "1"; ObjectID = "hWL-pd-P9k"; */
+"hWL-pd-P9k.normalTitle" = "1";
+
+/* Class = "IBUILabel"; text = "작품 번호"; ObjectID = "hgP-j8-lu6"; */
+"hgP-j8-lu6.text" = "작품 번호";
+
+/* Class = "IBUIButton"; normalTitle = "4"; ObjectID = "hzB-RS-D8P"; */
+"hzB-RS-D8P.normalTitle" = "4";
+
+/* Class = "IBUIButton"; normalTitle = "5"; ObjectID = "jEw-2I-YvJ"; */
+"jEw-2I-YvJ.normalTitle" = "5";
+
+/* Class = "IBUIButton"; normalTitle = "Play"; ObjectID = "lGS-Ya-S4I"; */
+"lGS-Ya-S4I.normalTitle" = "Play";
+
+/* Class = "IBUIButton"; normalTitle = "Play"; ObjectID = "lcz-7f-3h8"; */
+"lcz-7f-3h8.normalTitle" = "Play";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "nFe-o0-9bf"; */
+"nFe-o0-9bf.text" = "Label";
+
+/* Class = "IBUITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "nHE-qe-wii"; */
+"nHE-qe-wii.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "IBUIButton"; normalTitle = "2"; ObjectID = "nd3-Xq-sYV"; */
+"nd3-Xq-sYV.normalTitle" = "2";
+
+/* Class = "IBUITextView"; text = "스크립트가 없습니다"; ObjectID = "sAM-Qs-ztR"; */
+"sAM-Qs-ztR.text" = "스크립트가 없습니다";
+
+/* Class = "IBUILabel"; text = "GUIDES"; ObjectID = "svY-PB-Ho7"; */
+"svY-PB-Ho7.text" = "GUIDES";
+
+/* Class = "IBUIBarButtonItem"; title = "Item"; ObjectID = "uNK-xe-AjK"; */
+"uNK-xe-AjK.title" = "Item";
+
+/* Class = "IBUIButton"; normalTitle = "9"; ObjectID = "xzr-P6-C2C"; */
+"xzr-P6-C2C.normalTitle" = "9";
+
+/* Class = "IBUIButton"; normalTitle = "1"; ObjectID = "zzt-VT-QRh"; */
+"zzt-VT-QRh.normalTitle" = "1";

@@ -1,0 +1,42 @@
+
+/* Class = "IBUILabel"; text = "Number"; ObjectID = "2xo-yX-XCg"; */
+"2xo-yX-XCg.text" = "작품 번호";
+
+/* Class = "IBUILabel"; text = "INFO"; ObjectID = "3iL-mX-i0Z"; */
+"3iL-mX-i0Z.text" = "INFO";
+
+/* Class = "IBUITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "8IB-nx-ZrJ"; */
+"8IB-nx-ZrJ.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "IBUILabel"; text = "INTRO"; ObjectID = "9P2-Ea-vAN"; */
+"9P2-Ea-vAN.text" = "INTRO";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "D6G-VG-STb"; */
+"D6G-VG-STb.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "Gp5-MI-5Ua"; */
+"Gp5-MI-5Ua.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "HLd-lL-Pls"; */
+"HLd-lL-Pls.text" = "Label";
+
+/* Class = "IBUITextView"; text = "스크립트가 없습니다"; ObjectID = "OeX-MP-GtG"; */
+"OeX-MP-GtG.text" = "스크립트가 없습니다";
+
+/* Class = "IBUILabel"; text = "재생 중인 오디오가 없습니다"; ObjectID = "RRe-5i-myJ"; */
+"RRe-5i-myJ.text" = "재생 중인 오디오가 없습니다";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "W7f-EA-4Im"; */
+"W7f-EA-4Im.text" = "Label";
+
+/* Class = "IBUILabel"; text = "GUIDES"; ObjectID = "WKa-E8-DEY"; */
+"WKa-E8-DEY.text" = "GUIDES";
+
+/* Class = "IBUILabel"; text = "작품 번호를 입력해주세요"; ObjectID = "cXy-2D-K6d"; */
+"cXy-2D-K6d.text" = "작품 번호를 입력해주세요";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "oAc-LH-DAc"; */
+"oAc-LH-DAc.text" = "Label";
+
+/* Class = "IBUILabel"; text = "Label"; ObjectID = "qEn-bi-WUf"; */
+"qEn-bi-WUf.text" = "Label";

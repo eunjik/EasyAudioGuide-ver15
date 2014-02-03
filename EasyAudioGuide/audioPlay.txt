@@ -1,0 +1,553 @@
+//
+//  KSEItemViewController.m
+//  EasyAudioGuide
+//
+//  Created by 김 은지 on 13. 5. 23..
+//  Copyright (c) 2013년 EunjiKim. All rights reserved.
+//
+
+#import "KSEItemViewController.h"
+
+@interface KSEItemViewController ()
+
+@end
+
+@implementation KSEItemViewController
+@synthesize audioPlayer;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    NSIndexPath *tmpindex = [NSIndexPath indexPathForRow:0 inSection:0];
+    self.checkedIndexPath = tmpindex;
+    
+    //self.infoView.backgroundColor = [UIColor clearColor];
+    self.infoView.hidden = YES;
+    
+    self.typeTableView.hidden = YES;
+    UIBarButtonItem *barListBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(typeButtonClick:)];
+    self.navigationItem.rightBarButtonItem = barListBtn;
+    
+    [self parseStart:nil];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(effect) userInfo:nil repeats:YES];
+    
+    self.templates = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGuideTemplates"];
+    if ([[self.templates objectAtIndex:0] isEqualToString:@"list"])
+    {
+        self.buttonView.hidden = YES;
+        self.tableView.hidden = NO;
+    }
+    else{
+        self.buttonView.hidden = NO;
+        self.tableView.hidden = YES;
+        
+    }
+    
+    audioPlayer = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategorySoloAmbient error:nil];
+    self.audioSlider.value = 0.0;
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [audioPlayer stop];
+    [super viewWillDisappear:animated];
+    [self.timer invalidate];
+    
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void) effect
+{
+    [self.tableView reloadData];
+}
+
+- (void)parseStart:(id)sender
+{
+    NSString *selectedGuideId = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectedGuideId"];
+    
+    PFQuery *guideQuery = [PFQuery queryWithClassName:@"Item"];
+    [guideQuery whereKey:@"parent" equalTo:[PFObject objectWithoutDataWithClassName:@"Guide" objectId:selectedGuideId]];
+    
+    self.itemArray = [[NSMutableArray alloc] init];
+    
+    [guideQuery findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error){
+            for (int i=0; i<guideQuery.countObjects; i++){
+                PFObject *obj = [objects objectAtIndex:i];
+                NSString *ss;
+                NSString *newString;
+                KSEItem *item = [[KSEItem alloc] init];
+                
+                [item setObjectId:obj.objectId];
+                
+                ss = [obj objectForKey:@"name"];
+                newString = [ss stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                [item setName:newString];
+                
+                PFFile *audiofile = [obj objectForKey:@"audio_file"];
+                [item setAudio_file:audiofile.url];
+                
+                ss = [obj objectForKey:@"description"];
+                newString = [ss stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                //NSLog(@"%@",newString);
+                [item setDescription:newString];
+                
+                ss = [obj objectForKey:@"createdAt"];
+                newString = [ss stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                [item setCreatedAt:newString];
+                
+                ss = [obj objectForKey:@"updatedAt"];
+                newString = [ss stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                [item setUpdatedAt:newString];
+                
+                NSNumber *number = [obj objectForKey:@"number"];
+                [item setNumber:number];
+                
+                [self.itemArray addObject:item];
+            }
+            //NSData *_guideArray = [NSKeyedArchiver archivedDataWithRootObject:guideArray];
+            //[[NSUserDefaults standardUserDefaults] setObject:_guideArray forKey:@"guides"];
+        }
+    }];
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+- (IBAction)typeButtonClick:(id)sender{
+    if (self.typeTableView.hidden == YES){
+        [self.typeTableView reloadData];
+        self.typeTableView.hidden = NO;
+    }
+    else{
+        self.typeTableView.hidden = YES;
+    }
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    if (tableView == self.tableView){
+        return [self.itemArray count];
+    }
+    else{
+        return [self.templates count];
+    }
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.tableView){
+        if ([indexPath row]+1 == ((NSIndexPath*)[[tableView indexPathsForVisibleRows] lastObject]).row){
+            [self.timer invalidate];
+            //[self start];
+        }
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.tableView){
+        static NSString *CellIdentifier = @"ItemCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+        // Configure the cell...
+        KSEGuide *guide = [[KSEGuide alloc] init];
+        guide = [self.itemArray objectAtIndex:indexPath.row];
+    
+        UILabel *label = (UILabel *)[cell viewWithTag:1];
+        label.text = [[NSString alloc] initWithFormat:@"%@", guide.name];
+        return cell;
+    }
+    else{
+        static NSString *CellIdentifier = @"TypeCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+        
+        UILabel *label = (UILabel *)[cell viewWithTag:1];
+        label.text = [[NSString alloc] initWithFormat:@"%@", [self.templates objectAtIndex:indexPath.row]];
+        
+        if ([self.checkedIndexPath isEqual:indexPath]){
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else{
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+
+        return cell;
+    }
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (tableView == self.tableView){
+        self.selectedRow = indexPath.row;
+        KSEItem *tmp = [self.itemArray objectAtIndex:self.selectedRow];
+        self.playLabel.text = tmp.name;
+        self.infoLabel.text = tmp.description;
+    
+        //recent
+        /*
+		[self createStreamer];
+		[streamer start];
+        //~recent
+        */
+        //[[(AVAudioPlayer*)[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://files.parse.com/dce2d900-956f-4ed6-9f1a-755a4265b329/152af037-4c1b-433c-b434-b59f9982bbd2-110816TSMainTheme.mp3"]] error:nil] play];
+        
+        // Create AudioPlayer
+        
+        //AudioPlayer* audioPlayer = [[AudioPlayer alloc] init];
+        //audioPlayer.delegate = self;
+        
+        // Queue on a URL to play. Each queue item has a unique ID (item1) that to identify the related file in delegate callbacks
+        
+        audioPlayer = [[AudioPlayer alloc] init];
+        [audioPlayer setDataSource:[audioPlayer dataSourceFromURL:[NSURL URLWithString:@"http://files.parse.com/dce2d900-956f-4ed6-9f1a-755a4265b329/152af037-4c1b-433c-b434-b59f9982bbd2-110816TSMainTheme.mp3"]] withQueueItemId:@"item1"];
+        [self setupTimer];
+		
+         //[self start];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    else{
+        //checkmark
+        if (self.checkedIndexPath){
+            UITableViewCell *uncheckCell = [tableView cellForRowAtIndexPath:self.checkedIndexPath];
+            uncheckCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        self.checkedIndexPath = indexPath;
+        //~checkmark
+        
+        if ([[self.templates objectAtIndex:indexPath.row] isEqualToString:@"list"]){
+            self.typeTableView.hidden = YES;
+            self.buttonView.hidden = YES;
+            self.tableView.hidden = NO;
+            self.templateMode = 0;
+        }
+        else{
+            if ([[self.templates objectAtIndex:indexPath.row] isEqualToString:@"number"]){
+                self.typeTableView.hidden = YES;
+                self.buttonView.hidden = NO;
+                self.tableView.hidden = YES;
+                self.templateMode = 1;
+            }
+            else{
+                if ([[self.templates objectAtIndex:indexPath.row] isEqualToString:@"gps"]){
+                    self.typeTableView.hidden = YES;
+                    self.buttonView.hidden = YES;
+                    self.tableView.hidden = NO;
+                    self.templateMode = 2;
+                }
+            }
+        }
+    }
+}
+
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    [self.timer invalidate];
+    
+    //self.selectedTeam;
+    NSIndexPath *indexPath = [[NSIndexPath alloc]init];
+    indexPath = [self.tableView indexPathForSelectedRow];
+    KSEItem *selectedItem = [self.itemArray objectAtIndex:indexPath.row];
+    [[NSUserDefaults standardUserDefaults] setObject:selectedItem.objectId forKey:@"selectedItemId"];
+}
+
+- (IBAction)progressSliderMoved:(UISlider *)sender{
+    //audioPlayer.currentTime = sender.value;
+    //[audioPlayer setCurrentTime:sender.value];
+    [audioPlayer seekToTime:sender.value];
+}
+
+- (void) play{
+  /*  KSEItem *tmp = [self.itemArray objectAtIndex:self.selectedRow];
+    
+    NSArray *arrayPaths = NSSearchPathForDirectoriesInDomains(
+                                                              NSDocumentDirectory,
+                                                              NSUserDomainMask,
+                                                              YES);
+    NSString *docDir = [arrayPaths objectAtIndex:0];
+    NSString *filename = [[NSString alloc] initWithFormat:@"%@%d.mp3",tmp.objectId, self.selectedRow];
+    NSString *filePath = [[NSString alloc] initWithFormat:@"%@/%@", docDir, filename];
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    
+    self.playLabel.text = tmp.name;
+    self.infoLabel.text = tmp.description;
+    
+    
+    audioPlayer = [[AVAudioPlayer alloc]
+                   initWithContentsOfURL:fileURL
+                   error:NULL];
+    
+    [audioPlayer setNumberOfLoops:0];
+    [audioPlayer setVolume:0.3f];
+    [audioPlayer prepareToPlay];
+    //[audioPlayer play];
+    
+    self.audioSlider.maximumValue = [audioPlayer duration];
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updateTime:) userInfo:nil repeats:YES];
+    
+    
+    if (audioPlayer.playing == YES){
+        [self.playButton setTitle:@">" forState:UIControlStateNormal];
+        [audioPlayer pause];
+    }
+    else{
+        if (audioPlayer.playing == NO){
+            [self.playButton setTitle:@"||" forState:UIControlStateNormal];
+            [audioPlayer play];
+        }
+    }
+*/
+}
+
+-(void) playButtonPressed
+{
+	if (!audioPlayer)
+	{
+		return;
+	}
+	
+	if (audioPlayer.state == AudioPlayerStatePaused)
+	{
+		[audioPlayer resume];
+	}
+	else
+	{
+		[audioPlayer pause];
+	}
+}
+
+-(void) sliderChanged
+{
+	if (!audioPlayer)
+	{
+		return;
+	}
+	
+	NSLog(@"Slider Changed: %f", self.audioSlider.value);
+	
+	[audioPlayer seekToTime:self.audioSlider.value];
+}
+
+-(void) setupTimer
+{
+	self.timer = [NSTimer timerWithTimeInterval:0.25 target:self selector:@selector(tick) userInfo:nil repeats:YES];
+	
+	[[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+}
+
+-(void) tick
+{
+	if (!audioPlayer || audioPlayer.duration == 0)
+	{
+		self.audioSlider.value = 0;
+		
+		return;
+	}
+	
+	self.audioSlider.minimumValue = 0;
+	self.audioSlider.maximumValue = audioPlayer.duration;
+	
+	self.audioSlider.value = audioPlayer.progress;
+}
+
+
+- (IBAction)playButtonClick:(id)sender{
+    
+    [self playButtonPressed];
+    /*if (self.templateMode == 1)// number
+    {
+        int flag=0;
+        for (int i=0; i<self.itemArray.count; i++){
+            KSEItem *tmp = [self.itemArray objectAtIndex:i];
+            NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+            [f setNumberStyle:NSNumberFormatterDecimalStyle];
+            
+            if ([tmp.number isEqualToNumber:[f numberFromString:self.buttonLabel.text]]){
+                self.selectedRow = i;
+                flag=1;
+                break;
+            }
+        }
+        if (flag==1){
+            [self start];
+        }
+        else{
+            self.playLabel.text = @"없는 번호입니다.";
+            self.infoLabel.text = @"없는 번호입니다.";
+     
+            if (audioPlayer.playing == YES){
+                [self.playButton setTitle:@">" forState:UIControlStateNormal];
+                [audioPlayer stop];
+            }
+        }
+    }
+    else{
+        //[self play];
+        if (audioPlayer.playing == YES){
+            [self.playButton setTitle:@">" forState:UIControlStateNormal];
+            [audioPlayer pause];
+        }
+        else{
+            if (audioPlayer.playing == NO){
+                [self.playButton setTitle:@"||" forState:UIControlStateNormal];
+                [audioPlayer play];
+            }
+        }
+    }*/
+}
+
+- (IBAction)infoButtonClick:(id)sender
+{
+    if (self.infoView.hidden == YES){
+        self.infoView.hidden = NO;
+    }
+    else
+        self.infoView.hidden = YES;
+}
+
+- (void)updateTime:(NSTimer *)timer
+{
+    //self.audioSlider.value = audioPlayer.currentTime;
+    self.audioSlider.value = audioPlayer.progress;
+}
+
+
+- (void)start {
+    KSEItem *tmp = [self.itemArray objectAtIndex:self.selectedRow];
+    
+    NSArray *arrayPaths = NSSearchPathForDirectoriesInDomains(
+                                                              NSDocumentDirectory,
+                                                              NSUserDomainMask,
+                                                              YES);
+    NSString *docDir = [arrayPaths objectAtIndex:0];
+    NSString *filename = [[NSString alloc] initWithFormat:@"%@%d.mp3",tmp.objectId, self.selectedRow];
+    NSString *filePath = [[NSString alloc] initWithFormat:@"%@/%@", docDir, filename];
+   
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]){
+        [self play];
+    }
+    else{
+    
+        NSLog(@"Start Test drived development");
+        KNURLDownloader *knDownloader = [KNURLDownloader sharedInstance];
+        NSString *urlstr = tmp.audio_file;
+        //NSLog(@"%@",urlstr);
+        
+        [knDownloader download:urlstr
+            callbackTarget:self
+                onComplete:@selector(onDownloadComplete:)
+                   onError:@selector(onError)];
+    }
+}
+
+- (void)onDownloadComplete:(NSMutableData *)pRcvData {
+    NSLog(@"onFire downloadcomplete callback function");
+    KSEItem *tmp = [self.itemArray objectAtIndex:self.selectedRow];
+    KNURLDownloader *knDownloader = [KNURLDownloader sharedInstance];
+    NSString *filename = [[NSString alloc] initWithFormat:@"%@%d.mp3",tmp.objectId, self.selectedRow];
+    [knDownloader saveToFile:pRcvData pFileName:filename];
+    [self play];
+    
+}
+
+- (void)onDownloadError {
+    NSLog(@"onFire downloaderror callback function");
+}
+
+
+- (IBAction)Button0Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"0"];
+    self.buttonLabel.text = str;
+    
+}
+- (IBAction)Button1Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"1"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button2Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"2"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button3Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"3"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button4Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"4"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button5Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"5"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button6Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"6"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button7Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"7"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button8Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"8"];
+    self.buttonLabel.text = str;
+}
+- (IBAction)Button9Click:(id)sender
+{
+    NSString *str = [[NSString alloc] initWithFormat:@"%@%@",self.buttonLabel.text,@"9"];
+    self.buttonLabel.text = str;
+}
+
+- (IBAction)BackButtonClick:(id)sender
+{
+    if (self.buttonLabel.text.length>0)
+        self.buttonLabel.text = [self.buttonLabel.text substringToIndex:self.buttonLabel.text.length-1];
+}
+
+
+@end
